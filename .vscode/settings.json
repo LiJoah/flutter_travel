@@ -16,5 +16,6 @@
     "**/ios/": true,
     "**/android/": true
   },
-  "dart.autoImportCompletions": true
+  "dart.autoImportCompletions": true,
+  "dart.runPubGetOnPubspecChanges": false
 }

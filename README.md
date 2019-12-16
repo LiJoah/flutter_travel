@@ -1,4 +1,4 @@
-# flutter_go
+# flutter_travel
 
 A new Flutter project.
 
