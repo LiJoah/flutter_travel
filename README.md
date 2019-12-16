@@ -1,16 +1,16 @@
 # flutter_travel
 
-A new Flutter project.
+仿去哪儿网(flutter + mobx)
 
-## Getting Started
+> 运行项目需在 `config` 文件夹下新建 `scret_config.dart` 文件, 内容如下;
 
-This project is a starting point for a Flutter application.
+```dart
+  // 如下是去哪儿网请求接口需要的认证参数
+  const wxAppid = "";
 
-A few resources to get you started if this is your first Flutter project:
+  const wxUnionId = "";
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+  const wxV = "";
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+  const wxS = "";
+```
