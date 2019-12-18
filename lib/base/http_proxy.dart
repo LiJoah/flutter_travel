@@ -31,7 +31,7 @@ final _dio = Dio(BaseOptions(
 ));
 
 initDio() {
-  var cookieJar = CookieJar();
+  final cookieJar = CookieJar();
   _dio.interceptors.add(CookieManager(cookieJar));
   _dio.interceptors.add(_HttpInterceptors());
 }
@@ -39,14 +39,7 @@ initDio() {
 class _HttpInterceptors extends InterceptorsWrapper {
   @override
   Future onError(DioError err) {
-    print("HttpInterceptors error");
     return super.onError(err);
-  }
-
-  @override
-  Future onRequest(RequestOptions options) {
-    print("HttpInterceptors request");
-    return super.onRequest(options);
   }
 
   @override
@@ -117,12 +110,12 @@ class HttpProxy {
 
   Future<HttpBaseResult> _doSend() async {
     _setHeaders();
+    _setDefaultUrlArgs();
     logger.info("[Requset Headers :] $_headers");
     if (_method == 'POST') {
       HttpBaseResult res = await _sendPost();
       return res;
     } else if (_method == 'GET') {
-      _setDefaultQueryArgs();
       HttpBaseResult res = await _sendGet();
       return res;
     } else {
@@ -170,10 +163,15 @@ class HttpProxy {
       return res;
     } else {
       if (result is Map) {
-        res.code = (result["code"] ?? "") as String;
-        res.message = (result["code"] ?? "") as String;
-        res.data = result["data"];
-        res.ret = (result["ret"] ?? false) as bool;
+        print(result);
+        res.code = (result["code"] ??
+            result["status"].toString() ??
+            httpStatusCode.toString()) as String;
+        res.message = (result["message"] ??
+            result["code"] ??
+            httpStatusCode.toString()) as String;
+        res.data = result["data"] ?? {};
+        res.ret = (result["ret"] ?? true) as bool;
       } else if (result is List) {
         res.code = httpStatusCode.toString();
         res.message = "ok";
@@ -186,7 +184,7 @@ class HttpProxy {
 
   void _handleCommonError(int code, String msg) {
     // NOTE: 暂时不处理服务器
-    logger.warn("[159: HTTP 请求失败: ] $_path \n Code: $code \n Msg: $msg");
+    logger.warn("[HTTP 请求失败: ] $_path \n Code: $code \n Msg: $msg");
   }
 
   void _setHeaders() {
@@ -194,17 +192,24 @@ class HttpProxy {
     // _headers["authorization"] = HttpProxy._token ?? "";
   }
 
-  void _setDefaultQueryArgs() {
+  void _setDefaultUrlArgs() {
     _urlArgs.addAll({
-      "openId": "$wxAppid",
-      "name": "qunar_miniprogram_config4.json",
+      "openId": "$wxOpenid",
       "unionId": "$wxUnionId",
       "bd_source": "wx",
-      "wx_q": "U.palrenr1362",
+      "wx_q": "$wxQ",
       "wx_s": "$wxS",
-      "wx_t": "26509520",
+      "wx_t": "$wxT",
       "wx_v": "$wxV",
       "bd_origin": "scene_1001"
     });
+  }
+
+  void updateDefualtQueryArgs() {
+
+  }
+
+  void getDefualtQueryArgs() {
+
   }
 }

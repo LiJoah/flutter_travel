@@ -9,15 +9,23 @@ part 'index.g.dart';
 
 class IndexStore = _IndexStore with _$IndexStore;
 
+const _appBarTitleList = ["去哪儿旅行", "我的行程", "个人中心"];
+
 abstract class _IndexStore with Store {
   @observable
   HomeInfoModel homeInfo;
+
+  @observable
+  bool showFloatAd = true;
 
   @observable
   int value = 0;
 
   @observable
   int currentTabIndex = 0;
+
+  @observable
+  String indexAppBarTitle = "去哪儿旅行";
 
   @action
   void increment() {
@@ -27,11 +35,17 @@ abstract class _IndexStore with Store {
   @action
   void setCurrentTabIndex(int index) {
     currentTabIndex = index;
+    indexAppBarTitle = _appBarTitleList[index];
   }
 
   @action
   initHomeInfo(HomeInfoModel info) {
     homeInfo = info;
+  }
+
+  @action
+  setShowFloatAd(bool value) {
+    showFloatAd = value;
   }
 
   @action

@@ -6,6 +6,7 @@ import 'package:flutter_travel/base/storage.dart';
 import 'package:flutter_travel/store/index/index.dart';
 
 /// 实例化 IndexStore
+/// NOTE: 在 splash 中处理 登录, cookie 的校验
 final IndexStore indexStore = IndexStore();
 
 class SplashPage extends StatefulWidget {
@@ -26,40 +27,25 @@ class _SplashPageState extends State<SplashPage> {
 
   final String imageUrl = "assets/images/splash.jpg";
 
-  // Timer _timer;
-
-  // int start = 0;
-
   @override
   void initState() {
     /// 这里做一些初始化的工作
     storage.loaded.then((_) {
-      GlobalData.fetchHomeInfo().then((_) {
+      GlobalData.fetchHomeInfo().then((_) async {
         indexStore.initHomeInfo(GlobalData.homeInfo);
         Navigator.pushReplacementNamed(context, "/index");
       });
     });
     super.initState();
-    // _timer = Timer.periodic(time, (_) {
-    //   if (start >= 3) {
-    //     _timer?.cancel();
-    //     _timer = null;
-
-    //   }
-    //   start += 1;
-    // });
   }
 
   @override
   void dispose() {
-    // _timer?.cancel();
-    // _timer = null;
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance = ScreenUtil(width: 750, height: 1334)..init(context);
     return Align(
       alignment: Alignment.center,

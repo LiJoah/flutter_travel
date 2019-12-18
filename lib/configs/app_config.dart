@@ -5,7 +5,7 @@ const String devMode = "dev";
 
 /// app 应用配置
 /// app 名字
-const String appName = "仿去哪儿旅行";
+// const String appName = "仿去哪儿旅行";
 
 // app 主题颜色
 const Color primaryColor = Colors.white;

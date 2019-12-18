@@ -24,10 +24,10 @@ class HomeInfoModel {
 
   factory HomeInfoModel.fromMap(Map<String, dynamic> json) {
     json = json["wx"] as Map<String, dynamic>;
-    var _banners = (json["banner"]["recList"] ?? json["bannerNew"]["recList"])
+    var _banners = (json["bannerNew"]["recList"] ?? json["banner"]["recList"])
         as List<dynamic>;
     var banners = _genBanners(_banners);
-    var _float = json["float"]["default"] as Map<String, dynamic>;
+    var _float = json["toast"]["default"] as Map<String, dynamic>;
     var float = FloatBanner.fromMap(_float);
     var topMenuPanelInfo =
         HomeTopMenuPanelInfo.fromMap(json["indexMain"] as Map<String, dynamic>);
@@ -159,14 +159,14 @@ class HomeMenuItemModel {
 }
 
 class FloatBanner {
-  String img;
+  String toastImg;
   String mark;
   String url;
-  FloatBanner(this.img, this.mark, this.url);
+  FloatBanner(this.toastImg, this.mark, this.url);
 
   factory FloatBanner.fromMap(Map<String, dynamic> json) {
     return FloatBanner(
-      json["img"] as String ?? "",
+      json["toastImg"] as String ?? "",
       json["mark"] as String ?? "",
       json["url"] as String ?? "",
     );

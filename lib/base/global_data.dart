@@ -13,7 +13,7 @@ class GlobalData {
 
   GlobalData.init() {}
 
-  /// 获取首页的所有的数据
+  /// 获取首页的所有的数据, 这里应该是初始化首页的数据,
   static Future fetchHomeInfo() async {
     Fluttertoast.cancel();
     // 获取缓存 for shared_preferences

@@ -26,6 +26,23 @@ mixin _$IndexStore on _IndexStore, Store {
     }, _$homeInfoAtom, name: '${_$homeInfoAtom.name}_set');
   }
 
+  final _$showFloatAdAtom = Atom(name: '_IndexStore.showFloatAd');
+
+  @override
+  bool get showFloatAd {
+    _$showFloatAdAtom.context.enforceReadPolicy(_$showFloatAdAtom);
+    _$showFloatAdAtom.reportObserved();
+    return super.showFloatAd;
+  }
+
+  @override
+  set showFloatAd(bool value) {
+    _$showFloatAdAtom.context.conditionallyRunInAction(() {
+      super.showFloatAd = value;
+      _$showFloatAdAtom.reportChanged();
+    }, _$showFloatAdAtom, name: '${_$showFloatAdAtom.name}_set');
+  }
+
   final _$valueAtom = Atom(name: '_IndexStore.value');
 
   @override
@@ -58,6 +75,23 @@ mixin _$IndexStore on _IndexStore, Store {
       super.currentTabIndex = value;
       _$currentTabIndexAtom.reportChanged();
     }, _$currentTabIndexAtom, name: '${_$currentTabIndexAtom.name}_set');
+  }
+
+  final _$indexAppBarTitleAtom = Atom(name: '_IndexStore.indexAppBarTitle');
+
+  @override
+  String get indexAppBarTitle {
+    _$indexAppBarTitleAtom.context.enforceReadPolicy(_$indexAppBarTitleAtom);
+    _$indexAppBarTitleAtom.reportObserved();
+    return super.indexAppBarTitle;
+  }
+
+  @override
+  set indexAppBarTitle(String value) {
+    _$indexAppBarTitleAtom.context.conditionallyRunInAction(() {
+      super.indexAppBarTitle = value;
+      _$indexAppBarTitleAtom.reportChanged();
+    }, _$indexAppBarTitleAtom, name: '${_$indexAppBarTitleAtom.name}_set');
   }
 
   final _$reloadHomeInfoAsyncAction = AsyncAction('reloadHomeInfo');
@@ -94,6 +128,16 @@ mixin _$IndexStore on _IndexStore, Store {
     final _$actionInfo = _$_IndexStoreActionController.startAction();
     try {
       return super.initHomeInfo(info);
+    } finally {
+      _$_IndexStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setShowFloatAd(bool value) {
+    final _$actionInfo = _$_IndexStoreActionController.startAction();
+    try {
+      return super.setShowFloatAd(value);
     } finally {
       _$_IndexStoreActionController.endAction(_$actionInfo);
     }
