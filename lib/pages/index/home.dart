@@ -28,7 +28,6 @@ class HomePage extends StatelessWidget {
           child: EasyRefresh(
               header: MaterialHeader(),
               onRefresh: indexStore.reloadHomeInfo,
-
               /// listView 需要一个可计算的高,
               child:
                   ListView(scrollDirection: Axis.vertical, children: <Widget>[

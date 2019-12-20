@@ -6,7 +6,7 @@ typedef void Handler<D>(D data);
 class _EventListener {
   String _eventName;
   EventEmitter _emitter;
-  bool _destroied;
+  bool _destroied = false;
   Handler handler;
   _EventListener(this._eventName, this.handler, this._emitter);
 
@@ -31,7 +31,7 @@ class EventEmitter<E extends Map> {
 
   /// 事件监听
   _EventListener on(String event, Handler handler) {
-    if (_events.isNotEmpty) {
+    if (!_events.containsKey(event)) {
       _events[event] = [];
     }
     _EventListener listener = _EventListener(event, handler, this);

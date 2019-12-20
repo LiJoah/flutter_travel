@@ -58,7 +58,7 @@ class TravelListItem {
   final String desc;
   final String img;
   final int commentCount;
-  final int commentStore;
+  final double commentScore;
   final String productType;
   final String qunarPrice;
   final String area;
@@ -72,7 +72,7 @@ class TravelListItem {
       this.desc,
       this.img,
       this.commentCount,
-      this.commentStore,
+      this.commentScore,
       this.productType,
       this.qunarPrice,
       this.area,
@@ -86,14 +86,14 @@ class TravelListItem {
     String name = json["name"] as String;
     String desc = json["desc"] as String;
     int commentCount = json["commentCount"] as int;
-    int commentStore = json["commentStore"] as int;
+    double commentScore = json["commentScore"] as double;
     String productType = json["productType"] as String;
     String qunarPrice = json["qunarPrice"] as String;
     String area = json["area"] as String;
-    String saleCount = json["saleCount"] as String;
+    String saleCount = json["saleCount"].toString();
     bool canCashBack = json["canCashBack"] as bool;
     List activityTagList = json["activityTagList"] as List;
-    return TravelListItem(id, name, img, desc, commentCount, commentStore,
+    return TravelListItem(id, name, desc, img, commentCount, commentScore,
         productType, qunarPrice, area, saleCount, canCashBack, activityTagList);
   }
 }
