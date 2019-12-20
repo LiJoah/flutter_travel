@@ -26,7 +26,34 @@ mixin _$GlobalStore on _GlobalStore, Store {
     }, _$nameAtom, name: '${_$nameAtom.name}_set');
   }
 
+  final _$isLoginAtom = Atom(name: '_GlobalStore.isLogin');
+
+  @override
+  bool get isLogin {
+    _$isLoginAtom.context.enforceReadPolicy(_$isLoginAtom);
+    _$isLoginAtom.reportObserved();
+    return super.isLogin;
+  }
+
+  @override
+  set isLogin(bool value) {
+    _$isLoginAtom.context.conditionallyRunInAction(() {
+      super.isLogin = value;
+      _$isLoginAtom.reportChanged();
+    }, _$isLoginAtom, name: '${_$isLoginAtom.name}_set');
+  }
+
   final _$_GlobalStoreActionController = ActionController(name: '_GlobalStore');
+
+  @override
+  void setLogin(bool v) {
+    final _$actionInfo = _$_GlobalStoreActionController.startAction();
+    try {
+      return super.setLogin(v);
+    } finally {
+      _$_GlobalStoreActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void changeName() {

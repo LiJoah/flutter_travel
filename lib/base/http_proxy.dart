@@ -80,8 +80,6 @@ class _HttpInterceptors extends InterceptorsWrapper {
 /// http 请求的中间件
 class HttpProxy {
   static final String _host = baseUrl;
-  // static String _token;
-  // static String _apiKey = "0b2bdeda43b5688921839c8ecb20399b";
   String _method;
   String _path;
   Map<String, Object> _headers = {};
@@ -110,7 +108,8 @@ class HttpProxy {
 
   Future<HttpBaseResult> _doSend() async {
     _setHeaders();
-    _setDefaultUrlArgs();
+    // _updateDefualtQueryArgs(GlobalData.loginInfo.cookies);
+    _setDefualtQueryArgs();
     logger.info("[Requset Headers :] $_headers");
     if (_method == 'POST') {
       HttpBaseResult res = await _sendPost();
@@ -124,14 +123,17 @@ class HttpProxy {
   }
 
   Future<HttpBaseResult> _sendPost() async {
+    _setDefaultBodyArgs();
     String data = JsonEncoder().convert(_bodyArgs);
     try {
-      logger.verbose("[Send Requset Post: ] $_path \n $data");
-      Response response =
-          await _dio.post(_path, data: data, queryParameters: _bodyArgs);
+      logger.verbose("[Send Requset Post: ] [$_path]; [$_urlArgs]; [$data]");
+      Response response = await _dio.post(_path,
+          data: _bodyArgs,
+          queryParameters: _urlArgs,
+          options: Options(contentType: "application/x-www-form-urlencoded"));
       return _handleRes(response);
     } catch (e) {
-      logger.error("[117: HTTP 请求失败: ] $_path \n $data \n Error: $e");
+      logger.error("[HTTP 请求失败: ] $_path \n $data \n Error: $e");
       throw e;
     }
   }
@@ -162,12 +164,14 @@ class HttpProxy {
       res.ret = false;
       return res;
     } else {
+      logger.info("[$_path get result $result]");
       if (result is Map) {
-        print(result);
         res.code = (result["code"] ??
             result["status"].toString() ??
+            result["errCode"].toString() ??
             httpStatusCode.toString()) as String;
         res.message = (result["message"] ??
+            result["errMsg"] ??
             result["code"] ??
             httpStatusCode.toString()) as String;
         res.data = result["data"] ?? {};
@@ -178,38 +182,47 @@ class HttpProxy {
         res.ret = true;
         res.data = result;
       }
+      if (!res.ret) {
+        _handleCommonError(httpStatusCode, res.message);
+      }
       return res;
     }
   }
 
   void _handleCommonError(int code, String msg) {
     // NOTE: 暂时不处理服务器
-    logger.warn("[HTTP 请求失败: ] $_path \n Code: $code \n Msg: $msg");
+    logger.error(
+        "[HTTP 请求失败: ] $_path; Code: $code; Msg: $msg; Method: $_method;");
   }
 
   void _setHeaders() {
-    _headers['Content-Type'] = "application/json";
     // _headers["authorization"] = HttpProxy._token ?? "";
   }
 
-  void _setDefaultUrlArgs() {
-    _urlArgs.addAll({
-      "openId": "$wxOpenid",
-      "unionId": "$wxUnionId",
-      "bd_source": "wx",
-      "wx_q": "$wxQ",
-      "wx_s": "$wxS",
-      "wx_t": "$wxT",
-      "wx_v": "$wxV",
-      "bd_origin": "scene_1001"
+  void _setDefaultBodyArgs() {
+    _bodyArgs.addAll({
+      "uuid": uuid,
+      "qcookie": wxQ,
+      "tcookie": wxT,
+      "scookie": wxS,
+      "vcookie": wxV,
+      "version": version,
+      "clientJson": clientJson,
+      "weChatPlatform": weChatPlatform,
     });
   }
 
-  void updateDefualtQueryArgs() {
-
-  }
-
-  void getDefualtQueryArgs() {
-
+  void _setDefualtQueryArgs() {
+    Map<String, Object> defaultArgs = {
+      "unionId": wxUnionId,
+      "openId": wxOpenid,
+      "wx_v": wxV ?? "",
+      "wx_s": wxS ?? "",
+      "wx_t": wxT ?? "",
+      "wx_q": wxQ ?? "",
+      "bd_source": "wx",
+      "bd_origin": "scene_1006"
+    };
+    _urlArgs.addAll(defaultArgs);
   }
 }

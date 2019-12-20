@@ -16,3 +16,4 @@ const String baseUrl = "https://wxapp.qunar.com";
 /// 根据开发模式的布尔值
 const bool boolean = devMode == "dev" ? true : false;
 
+const sectionColor = Color(0xff00E5EE);

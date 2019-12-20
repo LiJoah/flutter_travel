@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_travel/base/api.dart';
+import 'package:flutter_travel/components/empty.dart';
 import 'package:flutter_travel/models/journey.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -23,7 +25,7 @@ class _JourneyPageState extends State<JourneyPage> {
     return _data.count == 0 || _data.timelines.isEmpty;
   }
 
-  _getJourneyList() async {
+  Future<void> _getJourneyList() async {
     JourneyDataModel data;
     var res = await Api.getJoureyList();
     if (res.code == "601") {
@@ -40,30 +42,27 @@ class _JourneyPageState extends State<JourneyPage> {
     });
   }
 
-  Widget _render() {
-    if (_data == null) {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    } else if (_isShowEmptyHint()) {
-      return Center(
-        child: Text(
-          "没有数据哦...",
-          style: TextStyle(color: Colors.black87, fontSize: 22),
-        ),
-      );
-    } else {
-      return Center(
-        child: Text(
-          "有数据了哦...",
-          style: TextStyle(color: Colors.black87, fontSize: 22),
-        ),
-      );
-    }
+  Widget _renderEmpty() {
+    return EmptyWidget();
   }
 
   @override
   Widget build(BuildContext context) {
-    return _render();
+    return EasyRefresh.custom(
+      emptyWidget: _isShowEmptyHint() ? _renderEmpty() : null,
+      onRefresh: _getJourneyList,
+      slivers: <Widget>[
+        SliverList(
+          delegate: SliverChildBuilderDelegate((context, index) {
+            return Center(
+              child: Text(
+                "有数据哦...",
+                style: TextStyle(color: Colors.black12, fontSize: 22),
+              ),
+            );
+          }, childCount: _data != null ? _data?.count : 0),
+        )
+      ],
+    );
   }
 }

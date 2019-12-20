@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_travel/models/home_info_config.dart';
+import 'package:flutter_travel/router.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class NavMenu extends StatefulWidget {
@@ -15,7 +16,7 @@ class NavMenu extends StatefulWidget {
 }
 
 /// 首页的导航菜单
-class _NavMenuState extends State<NavMenu> {
+class _NavMenuState extends State<NavMenu> with RouteHelper {
   final ScrollController _controller = ScrollController();
   NavMenuModel _navMenuData;
   double left = 0;
@@ -46,10 +47,20 @@ class _NavMenuState extends State<NavMenu> {
     }).toList();
   }
 
-  _handTap(String title, type) {
+  _handTap(String title, String type) {
     Fluttertoast.cancel();
-    Fluttertoast.showToast(
-        msg: "$title: $type: 暂未开发", gravity: ToastGravity.CENTER);
+    switch (type) {
+      case "一日游":
+        routePushNamed(RoutePath.yiriyou);
+        break;
+      case "travel":
+        Fluttertoast.showToast(
+            msg: "$title: $type: 暂未开发", gravity: ToastGravity.CENTER);
+        break;
+      default:
+        Fluttertoast.showToast(
+            msg: "$title: $type: 暂未开发", gravity: ToastGravity.CENTER);
+    }
   }
 
   Widget _renderCircleImage(String src) {

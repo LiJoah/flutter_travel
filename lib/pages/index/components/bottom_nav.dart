@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_travel/configs/app_config.dart';
 import 'package:flutter_travel/store/index/index.dart';
 import 'package:provider/provider.dart';
 
@@ -38,10 +39,10 @@ class BottomNavComponent extends StatelessWidget {
         return BottomNavigationBar(
           items: _renderBottomNavBar(),
           currentIndex: indexStore.currentTabIndex,
-          backgroundColor: Colors.white,
-          selectedItemColor: Color(0xff00E5EE),
+          backgroundColor: primaryColor,
+          selectedItemColor: sectionColor,
           selectedIconTheme: IconThemeData(
-            color: Color(0xff00E5EE),
+            color: sectionColor,
           ),
           onTap: (int index) {
             indexStore.setCurrentTabIndex(index);

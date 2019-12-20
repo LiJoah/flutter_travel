@@ -26,6 +26,23 @@ mixin _$IndexStore on _IndexStore, Store {
     }, _$homeInfoAtom, name: '${_$homeInfoAtom.name}_set');
   }
 
+  final _$accountInfoAtom = Atom(name: '_IndexStore.accountInfo');
+
+  @override
+  AccountInfo get accountInfo {
+    _$accountInfoAtom.context.enforceReadPolicy(_$accountInfoAtom);
+    _$accountInfoAtom.reportObserved();
+    return super.accountInfo;
+  }
+
+  @override
+  set accountInfo(AccountInfo value) {
+    _$accountInfoAtom.context.conditionallyRunInAction(() {
+      super.accountInfo = value;
+      _$accountInfoAtom.reportChanged();
+    }, _$accountInfoAtom, name: '${_$accountInfoAtom.name}_set');
+  }
+
   final _$showFloatAdAtom = Atom(name: '_IndexStore.showFloatAd');
 
   @override
@@ -138,6 +155,16 @@ mixin _$IndexStore on _IndexStore, Store {
     final _$actionInfo = _$_IndexStoreActionController.startAction();
     try {
       return super.setShowFloatAd(value);
+    } finally {
+      _$_IndexStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setAccountInfo(AccountInfo info) {
+    final _$actionInfo = _$_IndexStoreActionController.startAction();
+    try {
+      return super.setAccountInfo(info);
     } finally {
       _$_IndexStoreActionController.endAction(_$actionInfo);
     }

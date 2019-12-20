@@ -1,3 +1,5 @@
+import 'package:flutter_travel/configs/scret_config.dart';
+
 import 'http_proxy.dart';
 
 const servicePath = {};
@@ -26,21 +28,11 @@ class Api {
     return res;
   }
 
-  static Future<HttpBaseResult> login() async {
-    HttpBaseResult httpResult =
-        await Api.get('/oauth-client/wechatSmall/samllLogin', {});
-    return httpResult;
-  }
-
   static Future<HttpBaseResult> checkBind() async {
-    HttpBaseResult httpResult =
-        await Api.post('/oauth-client/wechatSmall/checkBind', {}, {});
-    return httpResult;
-  }
-
-  static Future<HttpBaseResult> validateLogin() async {
-    HttpBaseResult httpResult =
-        await Api.post('/oauth-client/wechatSmall/valid', {}, {});
+    HttpBaseResult httpResult = await Api.post(
+        '/oauth-client/wechatSmall/checkBind',
+        {},
+        {"token": token, "platform": weChatPlatform});
     return httpResult;
   }
 
@@ -54,10 +46,19 @@ class Api {
   }
 
   /// 获取行程列表
-  static Future<HttpBaseResult> getJoureyList() async {
+  static Future<HttpBaseResult> getJoureyList(
+      {int count = 20, int lastSortTime = 0}) async {
     /// 拿到放回的结果之后, 需要进行 Model 的转换;
-    HttpBaseResult result = await Api.post("/trip/wechat/list.do", {}, {});
+    HttpBaseResult result = await Api.post("/trip/wechat/list.do", {},
+        {"num": count, "lastSortTime": lastSortTime});
+    return result;
+  }
+
+  /// 获取一日游初始化数据
+  static Future<HttpBaseResult> getAroundAndHotSightData() async {
+    /// 拿到放回的结果之后, 需要进行 Model 的转换;
+    HttpBaseResult result = await Api.post(
+        "/ticket/pw/getAroundAndHotSight.json", {"apiVerson": "1.1"}, {});
     return result;
   }
 }
-

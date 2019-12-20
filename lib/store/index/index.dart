@@ -1,6 +1,7 @@
 import 'package:flutter_travel/base/api.dart';
 import 'package:flutter_travel/base/global_data.dart';
 import 'package:flutter_travel/base/logger_format.dart';
+import 'package:flutter_travel/models/account_info.dart';
 import 'package:flutter_travel/models/home_info_config.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobx/mobx.dart';
@@ -14,6 +15,9 @@ const _appBarTitleList = ["去哪儿旅行", "我的行程", "个人中心"];
 abstract class _IndexStore with Store {
   @observable
   HomeInfoModel homeInfo;
+
+  @observable
+  AccountInfo accountInfo;
 
   @observable
   bool showFloatAd = true;
@@ -46,6 +50,11 @@ abstract class _IndexStore with Store {
   @action
   setShowFloatAd(bool value) {
     showFloatAd = value;
+  }
+
+  @action
+  setAccountInfo(AccountInfo info) {
+    accountInfo = info;
   }
 
   @action
