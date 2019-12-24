@@ -51,7 +51,7 @@ class _NavMenuState extends State<NavMenu> with RouteHelper {
     Fluttertoast.cancel();
     switch (type) {
       case "一日游":
-        routePushNamed(RoutePath.yiriyou);
+        routePush(context, RoutePathAlias.yiriyou);
         break;
       case "travel":
         Fluttertoast.showToast(

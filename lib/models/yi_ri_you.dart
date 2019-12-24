@@ -1,7 +1,7 @@
 class AroundAndHotSightModel {
-  final TravelRecommentData hotSight;
-  final TravelRecommentData dayTripList;
-  final TravelRecommentData aroundSight;
+  final AroundAndHotSightPanelData hotSight;
+  final DayTripListPanelData dayTripList;
+  final AroundAndHotSightPanelData aroundSight;
   final bool isShowAround;
   final YiRiYouBanner banner;
 
@@ -9,14 +9,19 @@ class AroundAndHotSightModel {
       this.isShowAround, this.banner);
 
   factory AroundAndHotSightModel.fromMap(data) {
-    TravelRecommentData hotSight =
-        TravelRecommentData.fromMap(data["hotSight"]);
-    TravelRecommentData dayTripList =
-        TravelRecommentData.fromMap(data["dayTripList"]);
-    TravelRecommentData aroundSight =
-        TravelRecommentData.fromMap(data["aroundSight"]);
+    DayTripListPanelData dayTripList =
+        DayTripListPanelData.fromMap(data["dayTripList"]);
+
+    AroundAndHotSightPanelData hotSight =
+        AroundAndHotSightPanelData.fromMap(data["hotSight"]);
+
+    AroundAndHotSightPanelData aroundSight =
+        AroundAndHotSightPanelData.fromMap(data["aroundSight"]);
+
     bool isShowAround = data["isShowAround"] as bool;
+
     YiRiYouBanner banner = YiRiYouBanner.fromMap(data["banner"]);
+
     return AroundAndHotSightModel(
         hotSight, dayTripList, aroundSight, isShowAround, banner);
   }
@@ -33,29 +38,97 @@ class YiRiYouBanner {
   }
 }
 
-class TravelRecommentData {
+class DayTripListPanelData {
   final String title;
-  final List<TravelListItem> items;
-  TravelRecommentData(this.title, this.items);
+  final List<DayTripListItem> items;
+  DayTripListPanelData(this.title, this.items);
 
-  factory TravelRecommentData.fromMap(json) {
+  factory DayTripListPanelData.fromMap(json) {
     String title = json["title"] as String;
     List _items = json["items"] as List;
-    List<TravelListItem> items = _genList(_items);
-    return TravelRecommentData(title, items);
+    List<DayTripListItem> items = _genList(_items);
+    return DayTripListPanelData(title, items);
   }
 
-  static List<TravelListItem> _genList(List items) {
+  static List<DayTripListItem> _genList(List items) {
     return items.map((item) {
-      return TravelListItem.fromMap(item);
+      return DayTripListItem.fromMap(item);
     }).toList();
   }
 }
 
-class TravelListItem {
+class AroundAndHotSightPanelData {
+  final String title;
+  final List<AroundAndHotSightListItem> items;
+  AroundAndHotSightPanelData(this.title, this.items);
+
+  factory AroundAndHotSightPanelData.fromMap(json) {
+    String title = json["title"] as String;
+    List _items = json["items"] as List;
+    List<AroundAndHotSightListItem> items = _genList(_items);
+    return AroundAndHotSightPanelData(title, items);
+  }
+
+  static List<AroundAndHotSightListItem> _genList(List items) {
+    return items.map((item) {
+      return AroundAndHotSightListItem.fromMap(item);
+    }).toList();
+  }
+}
+
+class AroundAndHotSightListItem {
   final String id;
   final String name;
   final String desc;
+  final String img;
+  final int commentCount;
+  final double commentScore;
+  final String qunarPrice;
+  final double starWidth;
+  final bool canCashBack;
+  final List activityTagList;
+
+  AroundAndHotSightListItem(
+      this.id,
+      this.name,
+      this.desc,
+      this.img,
+      this.commentCount,
+      this.commentScore,
+      this.qunarPrice,
+      this.starWidth,
+      this.canCashBack,
+      this.activityTagList);
+
+  factory AroundAndHotSightListItem.fromMap(json) {
+    String img = json["img"] as String;
+    String id = json["id"] as String;
+    String name = json["name"] as String;
+    String desc = json["desc"] as String;
+    int commentCount = json["commentCount"] as int;
+    double commentScore = json["commentScore"] as double;
+    double starWidth = json["starWidth"] as double;
+    String qunarPrice = json["qunarPrice"] as String;
+    bool canCashBack = json["canCashBack"] as bool;
+    List activityTagList = json["activityTagList"] as List;
+    return AroundAndHotSightListItem(
+      id,
+      name,
+      desc,
+      img,
+      commentCount,
+      commentScore,
+      qunarPrice,
+      starWidth,
+      canCashBack,
+      activityTagList,
+    );
+  }
+}
+
+class DayTripListItem {
+  final String id;
+  final String name;
   final String img;
   final int commentCount;
   final double commentScore;
@@ -66,10 +139,9 @@ class TravelListItem {
   final bool canCashBack;
   final List activityTagList;
 
-  TravelListItem(
+  DayTripListItem(
       this.id,
       this.name,
-      this.desc,
       this.img,
       this.commentCount,
       this.commentScore,
@@ -80,11 +152,10 @@ class TravelListItem {
       this.canCashBack,
       this.activityTagList);
 
-  factory TravelListItem.fromMap(json) {
+  factory DayTripListItem.fromMap(json) {
     String img = json["img"] as String;
     String id = json["id"] as String;
     String name = json["name"] as String;
-    String desc = json["desc"] as String;
     int commentCount = json["commentCount"] as int;
     double commentScore = json["commentScore"] as double;
     String productType = json["productType"] as String;
@@ -93,7 +164,7 @@ class TravelListItem {
     String saleCount = json["saleCount"].toString();
     bool canCashBack = json["canCashBack"] as bool;
     List activityTagList = json["activityTagList"] as List;
-    return TravelListItem(id, name, desc, img, commentCount, commentScore,
+    return DayTripListItem(id, name, img, commentCount, commentScore,
         productType, qunarPrice, area, saleCount, canCashBack, activityTagList);
   }
 }

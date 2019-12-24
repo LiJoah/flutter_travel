@@ -20,7 +20,7 @@ tmux new-session -d -s $sessionName -n "compile"
 t=$sessionName:"compile"
 
 tmux split-window -vb -t $t "trap '' 2;flutter run --track-widget-creation;$SHELL"
-tmux split-window -h -t $t "trap '' 2;flutter packages pub run build_runner watch;$SHELL"
+tmux split-window -h -t $t "trap '' 2;flutter packages pub run build_runner watch --delete-conflicting-outputs;$SHELL"
 tmux select-pane -D -t $t
 
 tmux attach -t $sessionName

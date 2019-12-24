@@ -10,6 +10,9 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="flutter_travel"
         android:icon="@mipmap/ic_launcher">
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="f40b673688777579dcff215112f386e5" />
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

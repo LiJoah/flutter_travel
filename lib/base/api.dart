@@ -55,10 +55,13 @@ class Api {
   }
 
   /// 获取一日游初始化数据
-  static Future<HttpBaseResult> getAroundAndHotSightData() async {
+  static Future<HttpBaseResult> getAroundAndHotSightData(
+      {double lat, double lng}) async {
     /// 拿到放回的结果之后, 需要进行 Model 的转换;
     HttpBaseResult result = await Api.post(
-        "/ticket/pw/getAroundAndHotSight.json", {"apiVerson": "1.1"}, {});
+        "/ticket/pw/getAroundAndHotSight.json",
+        {"apiVerson": "1.1"},
+        {"lat": lat, "lng": lng});
     return result;
   }
 }
