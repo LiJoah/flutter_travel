@@ -64,4 +64,12 @@ class Api {
         {"lat": lat, "lng": lng});
     return result;
   }
+
+  /// 获取一日游搜索数据
+  static Future<HttpBaseResult> getYiRiYouSearchResult(String key) async {
+    /// 拿到放回的结果之后, 需要进行 Model 的转换;
+    HttpBaseResult result = await Api.get("/ticket/pw/sight/suggest.json",
+        {"apiVerson": "1.1", "type": "dayTrip", "key": key});
+    return result;
+  }
 }

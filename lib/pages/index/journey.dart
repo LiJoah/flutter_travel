@@ -22,7 +22,7 @@ class _JourneyPageState extends State<JourneyPage> {
   }
 
   bool _isShowEmptyHint() {
-    return _data.count == 0 || _data.timelines.isEmpty;
+    return _data != null && (_data.count == 0 || _data.timelines.isEmpty);
   }
 
   Future<void> _getJourneyList() async {

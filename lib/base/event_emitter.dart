@@ -41,7 +41,7 @@ class EventEmitter<E extends Map> {
 
   /// 发射事件
   bool emit<D extends Map>(String event, D data) {
-    if (_events[event].isEmpty) {
+    if (_events[event] == null || _events[event].isEmpty) {
       return false;
     }
     List<_EventListener> remains = [];
@@ -62,7 +62,7 @@ class EventEmitter<E extends Map> {
 
   /// 根据事件名和事件监听器注销事件
   off(String event, {_EventListener target}) {
-    if (_events[event].isEmpty) {
+    if (_events[event] == null || _events[event].isEmpty) {
       return false;
     }
     if (target != null) {

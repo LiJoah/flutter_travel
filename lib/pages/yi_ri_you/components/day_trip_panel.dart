@@ -6,13 +6,32 @@ import 'package:flutter_travel/pages/yi_ri_you/components/panel_bottom_info.dart
 import 'package:flutter_travel/pages/yi_ri_you/components/panel_left_image.dart';
 import 'package:flutter_travel/pages/yi_ri_you/components/panel_title.dart';
 
+enum RenderType { searchSreault, dayTrip }
+
 class DayTripPanel extends StatelessWidget {
   final DayTripListPanelData _d;
+  final RenderType _type;
 
-  DayTripPanel(this._d);
+  DayTripPanel(this._d, this._type);
 
   Widget _renderLeftImage(String img) {
     return PanelLeftImage(img);
+  }
+
+  Widget _renderSaleAndCommentInfo(DayTripListItem item) {
+    if (_type == RenderType.searchSreault) {
+      return Container();
+    }
+    return Padding(
+      padding: EdgeInsets.only(bottom: 10),
+      child: Text(
+        "已售:${item.saleCount} | ${item.commentScore} 分",
+        style: TextStyle(
+          fontSize: 12,
+          color: Colors.black26,
+        ),
+      ),
+    );
   }
 
   Widget _renderDayTripItemRightInfo(DayTripListItem item) {
@@ -29,16 +48,7 @@ class DayTripPanel extends StatelessWidget {
             maxLines: 2,
             style: TextStyle(fontSize: 14),
           ),
-          Padding(
-            padding: EdgeInsets.only(bottom: 10),
-            child: Text(
-              "已售:${item.saleCount} | ${item.commentScore} 分",
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.black26,
-              ),
-            ),
-          ),
+          _renderSaleAndCommentInfo(item),
           PanelBottomInfo(item.qunarPrice, item.area)
         ],
       ),

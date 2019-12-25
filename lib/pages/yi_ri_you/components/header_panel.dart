@@ -5,7 +5,6 @@ import 'package:flutter_travel/base/event_emitter.dart';
 import 'package:flutter_travel/base/screen_util_helper.dart';
 import 'package:flutter_travel/components/input_text_field.dart';
 import 'package:flutter_travel/configs/app_config.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class HeaderPanel extends StatelessWidget {
   final EventEmitter _eventEmitter;
@@ -22,8 +21,7 @@ class HeaderPanel extends StatelessWidget {
   Widget _renderCloseIcon() {
     return InkWell(
         onTap: () {
-          _eventEmitter.emit("clear", null);
-          Fluttertoast.showToast(msg: "close");
+          _eventEmitter.emit("clearValue", null);
         },
         child: Container(
           height: ScreenUtilHelper.setHeight(60),
@@ -45,6 +43,7 @@ class HeaderPanel extends StatelessWidget {
       padding: EdgeInsets.only(left: 10, right: 8),
       height: ScreenUtilHelper.setHeight(80),
       width: ScreenUtilHelper.setWidth(680),
+      alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(30))),

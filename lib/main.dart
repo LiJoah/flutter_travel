@@ -43,6 +43,8 @@ class MyApp extends StatelessWidget {
             },
             theme: ThemeData(
               primaryColor: primaryColor,
+              hintColor: Colors.white,
+              accentColor: Colors.white
             ),
             home: const SplashPage(),
             // 注册路由

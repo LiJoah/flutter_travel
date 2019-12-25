@@ -38,6 +38,7 @@ class _InputTextFieldState extends State<InputTextField> {
     });
     // 失去焦点
     widget._eventEmiter.on("blur", (_) {
+      print("get event blur");
       _focusNode.unfocus();
     });
     // _focusNode.addListener(() {
@@ -56,8 +57,17 @@ class _InputTextFieldState extends State<InputTextField> {
   @override
   void dispose() {
     super.dispose();
+    _controller.clear();
+    _controller = null;
     _focusNode.unfocus();
     _focusNode = null;
+  }
+
+  OutlineInputBorder _border() {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(30)),
+      borderSide: BorderSide(color: Colors.white),
+    );
   }
 
   @override
@@ -67,16 +77,29 @@ class _InputTextFieldState extends State<InputTextField> {
         focusNode: _focusNode,
         textAlign: TextAlign.left,
         controller: _controller,
-        style: TextStyle(color: Colors.white),
+        textAlignVertical: TextAlignVertical.center,
+        textInputAction: TextInputAction.done,
+        style: TextStyle(
+          color: Colors.black45,
+          textBaseline: TextBaseline.alphabetic,
+        ),
         // 点击了键盘上的完成按键, 提交数据
         onSubmitted: (value) {
-          widget._eventEmiter
-              .emit("submit", {"value": value, "focusNode": _focusNode});
+          if (value.isNotEmpty) {
+            widget._eventEmiter
+                .emit("submit", {"value": value, "focusNode": _focusNode});
+          }
         },
         decoration: InputDecoration(
-            border: InputBorder.none,
-            // hintStyle: style,
-            labelText: _lableText,
-            labelStyle: style));
+          focusedBorder: _border(),
+          enabledBorder: _border(),
+
+          // border: InputBorder.none,
+          contentPadding: EdgeInsets.all(10.0),
+
+          hintStyle: style,
+          hintText: _lableText,
+          // labelStyle: style,
+        ));
   }
 }

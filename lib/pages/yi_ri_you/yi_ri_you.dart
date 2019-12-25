@@ -29,7 +29,10 @@ class YiRiYouPage extends StatefulWidget {
 }
 
 class _YiRiYouPageState extends State<YiRiYouPage> with RouteHelper {
-  AroundAndHotSightModel data;
+  AroundAndHotSightModel _data;
+  DayTripListPanelData _searchResult;
+  bool renderSearchResult = false;
+
   bool error = false;
   final EventEmitter _eventEmitter = EventEmitter();
 
@@ -42,7 +45,19 @@ class _YiRiYouPageState extends State<YiRiYouPage> with RouteHelper {
 
   void _initEvents() {
     _eventEmitter.on("submit", (data) {
-      Fluttertoast.showToast(msg: data["value"].toString());
+      // Fluttertoast.showToast(msg: data["value"].toString());
+      print(
+        "get event submit ${data["value"]}",
+      );
+      _getSearchResult(data["value"].toString());
+      setState(() {
+        renderSearchResult = true;
+      });
+    });
+    _eventEmitter.on("clearValue", (_) {
+      setState(() {
+        renderSearchResult = false;
+      });
     });
   }
 
@@ -51,13 +66,32 @@ class _YiRiYouPageState extends State<YiRiYouPage> with RouteHelper {
     return location.latLng;
   }
 
+  _getSearchResult(String key) async {
+    HttpBaseResult res = await Api.getYiRiYouSearchResult(key);
+    setState(() {
+      _searchResult = DayTripListPanelData.fromMap(res.data);
+    });
+  }
+
+  Widget _renderSearchResult() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Column(
+        children: <Widget>[
+          _renderHeader(),
+          DayTripPanel(_searchResult, RenderType.searchSreault),
+        ],
+      ),
+    );
+  }
+
   _initAroundAndHotSightData() async {
     LatLng r = await _getLocation();
     HttpBaseResult result =
         await Api.getAroundAndHotSightData(lat: r.latitude, lng: r.longitude);
     if (result.ret) {
       setState(() {
-        data = AroundAndHotSightModel.fromMap(result.data);
+        _data = AroundAndHotSightModel.fromMap(result.data);
       });
     } else {
       Fluttertoast.showToast(msg: "网络卡顿了");
@@ -78,15 +112,18 @@ class _YiRiYouPageState extends State<YiRiYouPage> with RouteHelper {
   }
 
   Widget _renderMainContent() {
+    if (renderSearchResult) {
+      return _renderSearchResult();
+    }
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Column(
         children: <Widget>[
           _renderHeader(),
-          _renderBanner(data.banner),
-          DayTripPanel(data.dayTripList),
-          AroundAndHotSightPanel(data.aroundSight),
-          AroundAndHotSightPanel(data.hotSight),
+          _renderBanner(_data.banner),
+          DayTripPanel(_data.dayTripList, RenderType.dayTrip),
+          AroundAndHotSightPanel(_data.aroundSight),
+          AroundAndHotSightPanel(_data.hotSight),
         ],
       ),
     );
@@ -115,7 +152,13 @@ class _YiRiYouPageState extends State<YiRiYouPage> with RouteHelper {
   }
 
   Widget _render() {
-    if (data == null && !error) {
+    dynamic _d;
+    if (renderSearchResult) {
+      _d = _searchResult;
+    } else {
+      _d = _data;
+    }
+    if (_d == null && !error) {
       return _renderInitSkeleton();
     } else if (error) {
       return OurErrorWidget();
