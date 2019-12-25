@@ -58,7 +58,7 @@ class AroundAndHotSightPanel extends StatelessWidget {
                   )
                 ],
               )),
-          PanelBottomInfo(item.qunarPrice, "")
+          PanelBottomInfo(item.qunarPrice, "${item.distance}km")
         ],
       ),
     );

@@ -87,6 +87,7 @@ class AroundAndHotSightListItem {
   final double starWidth;
   final bool canCashBack;
   final List activityTagList;
+  final double distance;
 
   AroundAndHotSightListItem(
       this.id,
@@ -97,6 +98,7 @@ class AroundAndHotSightListItem {
       this.commentScore,
       this.qunarPrice,
       this.starWidth,
+      this.distance,
       this.canCashBack,
       this.activityTagList);
 
@@ -107,6 +109,7 @@ class AroundAndHotSightListItem {
     String desc = json["desc"] as String;
     int commentCount = json["commentCount"] as int;
     double commentScore = json["commentScore"] as double;
+    double distance = json["distance"] as double;
     double starWidth = json["starWidth"] as double;
     String qunarPrice = json["qunarPrice"] as String;
     bool canCashBack = json["canCashBack"] as bool;
@@ -120,6 +123,7 @@ class AroundAndHotSightListItem {
       commentScore,
       qunarPrice,
       starWidth,
+      distance,
       canCashBack,
       activityTagList,
     );
