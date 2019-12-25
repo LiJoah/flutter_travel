@@ -12,4 +12,8 @@ class ScreenUtilHelper {
   static double setScreenWidth() {
     return ScreenUtil().setWidth(ScreenUtil.screenWidth).toDouble();
   }
+
+  static double setScreenHeight() {
+    return ScreenUtil().setHeight(ScreenUtil.screenHeight).toDouble();
+  }
 }

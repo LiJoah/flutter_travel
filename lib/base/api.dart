@@ -72,4 +72,20 @@ class Api {
         {"apiVerson": "1.1", "type": "dayTrip", "key": key});
     return result;
   }
+
+  /// 获取一日游详情数据
+  static Future<HttpBaseResult> getYiRiYouDetail(String spuId) async {
+    /// 拿到放回的结果之后, 需要进行 Model 的转换;
+    HttpBaseResult result = await Api.get(
+        "/ticket/pw/dayTrip/detail.json", {"apiVerson": "1.1", "spuId": spuId});
+    return result;
+  }
+
+  /// 获取景点详情
+  static Future<HttpBaseResult> getSightDetail(String spuId) async {
+    /// 拿到放回的结果之后, 需要进行 Model 的转换;
+    HttpBaseResult result = await Api.get(
+        "/ticket/pw/dayTrip/detail.json", {"apiVerson": "1.1", "spuId": spuId});
+    return result;
+  }
 }

@@ -172,3 +172,4 @@ class DayTripListItem {
         productType, qunarPrice, area, saleCount, canCashBack, activityTagList);
   }
 }
+

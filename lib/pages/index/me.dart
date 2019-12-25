@@ -122,7 +122,6 @@ class MePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Color(0xfffafafa),
-      // decoration: BoxDecoration(color: Color(0xfffafafa)),
       height: ScreenUtil().setHeight(ScreenUtil.screenHeight).toDouble(),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,

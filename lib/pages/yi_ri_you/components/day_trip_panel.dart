@@ -5,12 +5,14 @@ import 'package:flutter_travel/models/yi_ri_you.dart';
 import 'package:flutter_travel/pages/yi_ri_you/components/panel_bottom_info.dart';
 import 'package:flutter_travel/pages/yi_ri_you/components/panel_left_image.dart';
 import 'package:flutter_travel/pages/yi_ri_you/components/panel_title.dart';
+import 'package:flutter_travel/router.dart';
 
 enum RenderType { searchSreault, dayTrip }
 
 class DayTripPanel extends StatelessWidget {
   final DayTripListPanelData _d;
   final RenderType _type;
+  final RouteHelperCls _routeHelper = RouteHelperCls();
 
   DayTripPanel(this._d, this._type);
 
@@ -55,20 +57,26 @@ class DayTripPanel extends StatelessWidget {
     );
   }
 
-  Widget _renderDayTripListItem(DayTripListItem item) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-          border:
-              Border(bottom: BorderSide(color: Color(0xffedebe8), width: 0.5))),
-      child: Row(
-        children: <Widget>[
-          _renderLeftImage(item.img),
-          Expanded(
-            flex: 1,
-            child: _renderDayTripItemRightInfo(item),
-          ),
-        ],
+  Widget _renderDayTripListItem(BuildContext context, DayTripListItem item) {
+    return InkWell(
+      onTap: () {
+        _routeHelper.routePush(context, RoutePathAlias.yiriyouDetail,
+            query: {"spuId": item.id});
+      },
+      child: Container(
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            border: Border(
+                bottom: BorderSide(color: Color(0xffedebe8), width: 0.5))),
+        child: Row(
+          children: <Widget>[
+            _renderLeftImage(item.img),
+            Expanded(
+              flex: 1,
+              child: _renderDayTripItemRightInfo(item),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -77,7 +85,7 @@ class DayTripPanel extends StatelessWidget {
     return PanelTitle(title);
   }
 
-  Widget _renderInfoPanel() {
+  Widget _renderInfoPanel(BuildContext context) {
     if (_d.items.isEmpty) {
       return Container();
     }
@@ -92,7 +100,7 @@ class DayTripPanel extends StatelessWidget {
               physics: NeverScrollableScrollPhysics(),
               itemCount: _d.items.length,
               itemBuilder: (context, index) {
-                return _renderDayTripListItem(_d.items[index]);
+                return _renderDayTripListItem(context, _d.items[index]);
               },
             ),
           )
@@ -103,6 +111,6 @@ class DayTripPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _renderInfoPanel();
+    return _renderInfoPanel(context);
   }
 }

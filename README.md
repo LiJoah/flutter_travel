@@ -83,13 +83,12 @@
 
   - 如果要使用 `Container` 来创建三个尺寸不一样的容器, 那么如果不进行处理, 子的 Container, 会直接根据父 `Container` 来计算, 即使子 `Container` 定义了宽和高, 那么这样需要使用 `Column` 元素来将子的 `Container` 进行包裹一层, 这是因为 `Row` 和 `Column` 元素会将尺寸重新计算
 
-
 - input TextField 的边框问题:
 
   - input 的边框颜色都是获取焦点时候的颜色, 当失去焦点的时候, 都是黑色, 这个要改变需要使用 `Theme` 控件来进行包装
 
     ```dart
-    <!-- foucs -->
+    // foucs
       Theme(
         data: new ThemeData(primaryColor: Colors.red, hintColor: Colors.blue),
         child: TextField(
@@ -97,11 +96,10 @@
               contentPadding: EdgeInsets.all(10.0),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15.0),
-  <!-- //            borderSide: BorderSide(color: Colors.red, width: 3.0, style: BorderStyle.solid) //没什么卵效果 -->
-              )),
+                //borderSide: BorderSide(color: Colors.red, width: 3.0, style: BorderStyle.solid) //没什么卵效果
+          )),
         ),
       );
-
     ```
 
     - 在失去焦点的输入框会有黑色的边框, 如果将 border 属性改为 focusedBorder, 那么会出现文本根据 baseline 对齐, 那么会出现垂直不居中, 我改为这样就好了;

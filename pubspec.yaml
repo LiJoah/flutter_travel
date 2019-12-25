@@ -41,6 +41,7 @@ dependencies:
   # 高德定位
   amap_location_fluttify: 0.8.0+ea37ae9
   permission_handler: ^4.0.0
+  webview_flutter: ^0.3.18+1
   # fish_redux: ^0.1.6
 
 dev_dependencies:

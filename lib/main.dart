@@ -34,22 +34,22 @@ class MyApp extends StatelessWidget {
             // initialRoute: '/splash',
             onGenerateRoute: (RouteSettings settings) {
               String routeName = settings.name;
+              print(routeName);
               // 使用命名路由钩子拦截路由, 创建路由动画
-              return MaterialPageRoute(builder: (_) {
+              return MaterialPageRoute(builder: (context) {
                 // 如果访问的路由页需要登录，但当前未登录，则直接返回登录页路由，
                 // 引导用户登录；其它情况则正常打开路由。
-                return routers[routeName].page;
+                return routers[routeName].page(context);
               });
             },
             theme: ThemeData(
-              primaryColor: primaryColor,
-              hintColor: Colors.white,
-              accentColor: Colors.white
-            ),
+                primaryColor: primaryColor,
+                hintColor: Colors.white,
+                accentColor: Colors.white),
             home: const SplashPage(),
             // 注册路由
-            routes: {"/index": (_) => IndexPage()}..addEntries(routers.values
-                .map((item) => MapEntry(item.path, (_) => item.page))),
+            routes: {"/index": (_) => IndexPage()}..addEntries(
+                routers.values.map((item) => MapEntry(item.path, item.page))),
           );
         }));
   }

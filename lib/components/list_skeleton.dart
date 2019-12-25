@@ -10,7 +10,7 @@ class NormalListSkeleton extends StatelessWidget {
   List<Widget> _renderList() {
     List<Widget> list = [];
     for (var i = 0; i < count; i++) {
-      list.add(CoinRankingListItemSkeleton());
+      list.add(_ListTileItemSkeleton());
     }
     return list;
   }
@@ -29,7 +29,7 @@ class NormalListSkeleton extends StatelessWidget {
   }
 }
 
-class CoinRankingListItemSkeleton extends StatelessWidget {
+class _ListTileItemSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(

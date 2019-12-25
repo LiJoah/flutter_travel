@@ -19,7 +19,6 @@ class IndexPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final IndexStore indexStore = Provider.of<IndexStore>(context);
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
           // 标题居中
           centerTitle: true,

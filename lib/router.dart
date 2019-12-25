@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_travel/pages/sight_detail/sight_detail.dart';
 import 'package:flutter_travel/pages/yi_ri_you/yi_ri_you.dart';
+import 'package:flutter_travel/widgets/webview.dart';
 
 class Route {
   Route({@required this.path, @required this.page, this.title});
 
-  final Widget page;
+  final WidgetBuilder page;
   final String path;
   final String title;
 }
@@ -12,14 +14,36 @@ class Route {
 final Map<String, Route> routers = {
   "/yiriyou": Route(
     path: RoutePathAlias.yiriyou,
-    page: YiRiYouPage(),
+    page: (_) => YiRiYouPage(),
     title: '一日游',
+  ),
+  "/sight_detail": Route(
+    path: RoutePathAlias.sightDetail,
+    page: (_) => SightDetailPage(),
+    title: '景点详情',
+  ),
+  "/yiriyou_detail": Route(
+    path: RoutePathAlias.sightDetail,
+    page: (_) => SightDetailPage(),
+    title: '景点详情',
+  ),
+  "/webview": Route(
+    path: RoutePathAlias.webview,
+    page: (_) => WebViewPage(),
+    title: '去哪儿呀',
   )
 };
 
 class RoutePathAlias {
   static final String index = "/index";
   static final String yiriyou = "/yiriyou";
+  // NOTE: 景点详情
+  static final String sightDetail = "/sight_detail";
+
+  // NOTE: 一日游详情
+  static final String yiriyouDetail = "/yiriyou_detail";
+
+  static final String webview = "/webview";
 }
 
 /// NOTE: 抽象出来的 routeHelper 主要是为了在路由的中间层做一个处理, 并统一管理路由,
@@ -37,4 +61,11 @@ mixin RouteHelper {
   routeReplace<T>(BuildContext context, String path, {T query}) {
     Navigator.pushReplacementNamed(context, path, arguments: query);
   }
+
+  Object getRouteArgs(BuildContext context) {
+    return ModalRoute.of(context).settings.arguments;
+  }
 }
+
+/// NOTE: 如果是 StatelessWidget 那么需要使用下面一个类来操作路由
+class RouteHelperCls with RouteHelper {}

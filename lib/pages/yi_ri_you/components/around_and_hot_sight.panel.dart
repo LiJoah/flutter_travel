@@ -6,10 +6,12 @@ import 'package:flutter_travel/pages/yi_ri_you/components/panel_bottom_info.dart
 import 'package:flutter_travel/pages/yi_ri_you/components/panel_left_image.dart';
 import 'package:flutter_travel/pages/yi_ri_you/components/panel_title.dart';
 import 'package:flutter_travel/pages/yi_ri_you/components/star_score.dart';
+import 'package:flutter_travel/router.dart';
 
 /// 附近和热销景点
 class AroundAndHotSightPanel extends StatelessWidget {
   final AroundAndHotSightPanelData _d;
+  final RouteHelperCls _routeHelper = RouteHelperCls();
 
   AroundAndHotSightPanel(AroundAndHotSightPanelData this._d);
 
@@ -64,25 +66,32 @@ class AroundAndHotSightPanel extends StatelessWidget {
     );
   }
 
-  Widget _renderDayTripListItem(AroundAndHotSightListItem item) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-          border:
-              Border(bottom: BorderSide(color: Color(0xffedebe8), width: 0.5))),
-      child: Row(
-        children: <Widget>[
-          _renderLeftImage(item.img),
-          Expanded(
-            flex: 1,
-            child: _renderDayTripItemRightInfo(item),
-          ),
-        ],
+  Widget _renderDayTripListItem(
+      BuildContext context, AroundAndHotSightListItem item) {
+    return InkWell(
+      onTap: () {
+        _routeHelper.routePush(context, RoutePathAlias.sightDetail,
+            query: {"sightId": item.id});
+      },
+      child: Container(
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            border: Border(
+                bottom: BorderSide(color: Color(0xffedebe8), width: 0.5))),
+        child: Row(
+          children: <Widget>[
+            _renderLeftImage(item.img),
+            Expanded(
+              flex: 1,
+              child: _renderDayTripItemRightInfo(item),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _renderList() {
+  Widget _renderList(BuildContext context) {
     if (_d.items.isEmpty) {
       return Container();
     }
@@ -97,7 +106,7 @@ class AroundAndHotSightPanel extends StatelessWidget {
               physics: NeverScrollableScrollPhysics(),
               itemCount: _d.items.length,
               itemBuilder: (context, index) {
-                return _renderDayTripListItem(_d.items[index]);
+                return _renderDayTripListItem(context, _d.items[index]);
               },
             ),
           )
@@ -108,6 +117,6 @@ class AroundAndHotSightPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _renderList();
+    return _renderList(context);
   }
 }

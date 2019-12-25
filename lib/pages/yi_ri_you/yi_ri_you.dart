@@ -16,6 +16,7 @@ import 'package:flutter_travel/pages/yi_ri_you/components/day_trip_panel.dart';
 import 'package:flutter_travel/pages/yi_ri_you/components/header_panel.dart';
 import 'package:flutter_travel/router.dart';
 import 'package:flutter_travel/system/geolocator_helper.dart';
+import 'package:flutter_travel/widgets/normal_app_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -169,15 +170,10 @@ class _YiRiYouPageState extends State<YiRiYouPage> with RouteHelper {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
-        backgroundColor: sectionColor,
-        elevation: 0,
-        centerTitle: true,
-        title: Text(
-          "一日游",
-          style: TextStyle(color: Colors.white, fontSize: 16),
-        ),
+      appBar: NormalAppBar(
+        bgColor: sectionColor,
+        title: "一日游",
+        fontColor: Colors.white,
       ),
       body: GestureDetector(
         // NOTE: 轻触屏幕失去焦点
