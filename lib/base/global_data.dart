@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_travel/base/storage.dart';
 import 'package:flutter_travel/base/utils.dart';
+import 'package:flutter_travel/configs/normal_config.dart';
 import 'package:flutter_travel/models/home_info_config.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -17,7 +18,10 @@ class GlobalData {
   static Future fetchHomeInfo() async {
     Fluttertoast.cancel();
     // 获取缓存 for shared_preferences
-    var _homeInfo = _getHomeInfo();
+    var _homeInfo = _getHomeInfoByStorage();
+    if (_homeInfo != null) {
+      return;
+    }
     try {
       if (_homeInfo != null) {
         homeInfo = _homeInfo;
@@ -36,11 +40,10 @@ class GlobalData {
     }
   }
 
-  static HomeInfoModel _getHomeInfo() {
-    var data = storage.getItem("homeInfo") as String;
-    if (data != null) {
-      Map<String, dynamic> map =
-          JsonCodec().decode(data) as Map<String, dynamic>;
+  static HomeInfoModel _getHomeInfoByStorage() {
+    var data = storage.getItem(StorageKeyAlias.homeInfo) as String;
+    if (data != null && data.isNotEmpty) {
+      Map<String, dynamic> map = jsonDecode(data) as Map<String, dynamic>;
       int expireAt = int.parse(map["expireAt"].toString());
       Map<String, dynamic> info = map["data"] as Map<String, dynamic>;
       int now = Utils.currentTimeMillis();
@@ -55,9 +58,8 @@ class GlobalData {
   }
 
   static setHomeInfo(dynamic map) {
-    int expireAt = 2000 + Utils.currentTimeMillis();
-    String json =
-        JsonCodec().encode({"data": map, "expireAt": expireAt.toString()});
-    storage.setItem("homeInfo", json);
+    int expireAt = indexDataExpireAtInterval + Utils.currentTimeMillis();
+    Map json = {"data": map, "expireAt": expireAt.toString()};
+    storage.setItem(StorageKeyAlias.homeInfo, json);
   }
 }

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_travel/base/api.dart';
-import 'package:flutter_travel/system/geolocator_helper.dart';
 import 'package:flutter_travel/base/global_data.dart';
 // import 'package:flutter_travel/base/geolocator_helper.dart';
 // import 'package:flutter_travel/base/global_data.dart';
 import 'package:flutter_travel/base/http_proxy.dart';
 import 'package:flutter_travel/base/storage.dart';
+import 'package:flutter_travel/base/utils.dart';
 import 'package:flutter_travel/models/account_info.dart';
 import 'package:flutter_travel/router.dart';
 import 'package:flutter_travel/store/global/global.dart';
@@ -32,7 +32,7 @@ class _SplashPageState extends State<SplashPage> with RouteHelper {
   final IndexStore indexStore = IndexStore();
   final GlobalStore globalStore = GlobalStore();
 
-  final String imageUrl = "assets/images/splash.jpg";
+  String imageUrl;
 
   @override
   void initState() {
@@ -43,7 +43,13 @@ class _SplashPageState extends State<SplashPage> with RouteHelper {
         routeReplace(context, RoutePathAlias.index);
       });
     });
+    imageUrl = _genImageUrl();
     super.initState();
+  }
+
+  String _genImageUrl() {
+    int index = Utils.randomInt(1, 3);
+    return "assets/images/splash_$index.gif";
   }
 
   // NOTE: _getAccountInfo : 暂时没有找到绕过 qunar 的服务器的限制, 一直报内部错误

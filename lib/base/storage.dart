@@ -1,7 +1,15 @@
+import 'dart:convert';
+
+import 'package:flutter_travel/base/logger_format.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class _Storage {
+/// NOTE: 定义本地缓存的字段
+class StorageKeyAlias {
+  static final String homeInfo = "homeInfo";
+  static final String yiriyouDetail = "yiriyouDetail";
+}
 
+class _Storage {
   SharedPreferences _sharedPreferences;
   _Storage() {
     loaded = _loadPreferences();
@@ -14,6 +22,7 @@ class _Storage {
   }
 
   setItem(String key, dynamic value) {
+    logger.debug("set key:[$key], value: $value for Storage");
     if (value is double) {
       _sharedPreferences.setDouble(key, value);
     } else if (value is int) {
@@ -23,7 +32,7 @@ class _Storage {
     } else if (value is bool) {
       _sharedPreferences.setBool(key, value);
     } else {
-      _sharedPreferences.setString(key, value.toString());
+      _sharedPreferences.setString(key, jsonEncode(value));
     }
   }
 
@@ -35,10 +44,36 @@ class _Storage {
 
   dynamic getItem(String key) {
     bool hasKey = _sharedPreferences.containsKey(key);
+    var r;
     if (hasKey) {
-      return _sharedPreferences.get(key);
+      r = _sharedPreferences.get(key);
+      if (r == null || r.toString().isEmpty) {
+        r = null;
+      }
     }
-    return null;
+    logger.debug("get key:[$key] value: $r, from Storage");
+    return r;
+  }
+
+  Future<bool> delete(String key) async {
+    bool res = await _sharedPreferences.setString(key, "");
+    return res;
+  }
+
+  Future<bool> deleteKeys(List<String> keys) async {
+    int count = 0;
+    for (var key in keys) {
+      if (await _sharedPreferences.containsKey(key)) {
+        bool r = await _sharedPreferences.setString(key, "");
+        if (r) {
+          count++;
+        }
+      }
+    }
+    if (count == keys.length) {
+      return true;
+    }
+    return false;
   }
 
   List<dynamic> getItems(List<String> keys) {
@@ -53,7 +88,6 @@ class _Storage {
     }
     return list;
   }
-
 }
 
 _Storage storage = _Storage();

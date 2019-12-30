@@ -26,7 +26,7 @@ class _EventListener {
 }
 
 /// NOTE: 事件发射驱动; 为component 提供事件驱动的能力, 避免参数的传递
-class EventEmitter<E extends Map> {
+mixin EventEmitter<E extends Map> {
   HashMap<String, List<_EventListener>> _events = HashMap();
 
   /// 事件监听

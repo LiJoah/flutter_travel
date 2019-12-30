@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/services.dart';
 
 class Utils {
@@ -40,6 +42,7 @@ class Utils {
   }
 
   /// 复制到剪粘板
+  /// String text 需要复制的文本
   static copyToClipboard(final String text) {
     if (text == null) return;
     Clipboard.setData(ClipboardData(text: text));
@@ -51,6 +54,7 @@ class Utils {
   }
 
   /// 返回两个日期相差的天数
+  /// a - b
   static int daysBetween(DateTime a, DateTime b, [bool ignoreTime = false]) {
     if (ignoreTime) {
       int v = a.millisecondsSinceEpoch ~/ 86400000 -
@@ -62,5 +66,11 @@ class Utils {
       if (v < 0) v = -v;
       return v ~/ 86400000;
     }
+  }
+
+  /// 随机生成 [a, b] 之间的整数
+  static int randomInt(int min, int max) {
+    final rand = Random();
+    return rand.nextInt(max - min) + min;
   }
 }

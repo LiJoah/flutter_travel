@@ -1,10 +1,79 @@
 class YiRiYouDetailModel {
   final SpuInfo spuInfo;
-  YiRiYouDetailModel(this.spuInfo);
+  final List<TagData> tagList;
+  final CommentInfoData commentInfo;
+  final FeatureData feature;
+  final RouteListDataModel routes;
+  final List<BookingInfoItem> bookingInfo;
+  final List<CommentListItem> commentList;
+  final StructureInfoDataModel structureInfo;
+
+  /// page url
+  final String travelBusinessCertificateScheme;
+  final CategoryDataModel category;
+
+  YiRiYouDetailModel(
+    this.spuInfo,
+    this.tagList,
+    this.bookingInfo,
+    this.category,
+    this.commentInfo,
+    this.commentList,
+    this.feature,
+    this.routes,
+    this.structureInfo,
+    this.travelBusinessCertificateScheme,
+  );
 
   factory YiRiYouDetailModel.fromMap(data) {
     final SpuInfo spuInfo = SpuInfo.fromMap(data["spuInfo"]);
-    return YiRiYouDetailModel(spuInfo);
+    final List<TagData> tagList = _genTagList(data["tagList"] as List);
+    final CommentInfoData commentInfo =
+        CommentInfoData.fromMap(data["commentInfo"]);
+    final FeatureData feature = FeatureData.fromMap(data["feature"]);
+    final RouteListDataModel routes =
+        RouteListDataModel.fromMap(data["routes"]);
+    final List<BookingInfoItem> bookingInfo =
+        _genBookingInfoList(data["bookingInfo"] as List);
+    final List<CommentListItem> commentList =
+        _genCommentInfoList(data["commentList"] as List);
+    final StructureInfoDataModel structureInfo =
+        StructureInfoDataModel.fromMap(data["structureInfo"]);
+    final String travelBusinessCertificateScheme =
+        data["travelBusinessCertificateScheme"] as String;
+    final CategoryDataModel category =
+        CategoryDataModel.fromJson(data["category"]);
+
+    return YiRiYouDetailModel(
+      spuInfo,
+      tagList,
+      bookingInfo,
+      category,
+      commentInfo,
+      commentList,
+      feature,
+      routes,
+      structureInfo,
+      travelBusinessCertificateScheme,
+    );
+  }
+
+  static List<TagData> _genTagList(List items) {
+    return items.map((item) {
+      return TagData.fromMap(item);
+    }).toList();
+  }
+
+  static List<BookingInfoItem> _genBookingInfoList(List items) {
+    return items.map((item) {
+      return BookingInfoItem.fromMap(item);
+    }).toList();
+  }
+
+  static List<CommentListItem> _genCommentInfoList(List items) {
+    return items.map((item) {
+      return CommentListItem.fromMap(item);
+    }).toList();
   }
 }
 
@@ -12,21 +81,21 @@ class SpuInfo {
   final String productName;
   final String bannerImgUrl;
   final String shareImgUrl;
-  final String formCity;
+  final String fromCity;
   final String teamType;
   final String type;
-  final String aleadySellCount;
+  final String alreadySellCount;
   final String supplierId;
   final String supplierName;
-  final List<String> imgUrls;
+  final List<Object> imgUrls;
   final int ticketTypeId;
   final int qunarPrice;
   final String productType;
 
   SpuInfo(
-    this.aleadySellCount,
+    this.alreadySellCount,
     this.bannerImgUrl,
-    this.formCity,
+    this.fromCity,
     this.imgUrls,
     this.productName,
     this.productType,
@@ -43,20 +112,20 @@ class SpuInfo {
     final String productName = json["productName"] as String;
     final String bannerImgUrl = json["bannerImgUrl"] as String;
     final String shareImgUrl = json["shareImgUrl"] as String;
-    final String formCity = json["formCity"] as String;
+    final String fromCity = json["fromCity"] as String;
     final String teamType = json["teamType"] as String;
     final String type = json["type"] as String;
-    final String aleadySellCount = json["aleadySellCount"] as String;
+    final String alreadySellCount = json["alreadySellCount"] as String;
     final String supplierId = json["supplierId"] as String;
     final String supplierName = json["supplierName"] as String;
-    final List<String> imgUrls = json["imgUrls"] as List<String>;
+    final List<Object> imgUrls = json["imgUrls"] as List<Object>;
     final int ticketTypeId = json["ticketTypeId"] as int;
     final int qunarPrice = json["qunarPrice"] as int;
     final String productType = json["productType"] as String;
     return SpuInfo(
-        aleadySellCount,
+        alreadySellCount,
         bannerImgUrl,
-        formCity,
+        fromCity,
         imgUrls,
         productName,
         productType,
@@ -72,14 +141,14 @@ class SpuInfo {
 
 class TagData {
   final String label;
-  final String type;
+  final int type;
   final String icon;
 
   TagData(this.type, this.icon, this.label);
 
   factory TagData.fromMap(json) {
     final String label = json["label"] as String;
-    final String type = json["type"] as String;
+    final int type = json["type"] as int;
     final String icon = json["icon"] as String;
     return TagData(type, icon, label);
   }
@@ -87,12 +156,12 @@ class TagData {
 
 class CommentInfoData {
   final String score;
-  final String total;
+  final int total;
 
   CommentInfoData(this.score, this.total);
 
   factory CommentInfoData.fromMap(json) {
-    final String total = json["total"] as String;
+    final int total = json["total"] as int;
     final String score = json["score"] as String;
     return CommentInfoData(score, total);
   }
@@ -139,7 +208,7 @@ class RouteListDataModel {
 
   RouteListDataModel(this.route, this.routeType);
 
-  factory RouteListDataModel.fromJson(Map<String, dynamic> json) {
+  factory RouteListDataModel.fromMap(json) {
     List<RouteItem> route = _genList(json['route'] as List);
     String routeType = json['routeType'] as String;
     return RouteListDataModel(route, routeType);
@@ -547,16 +616,16 @@ class ValueProperties {
 }
 
 class ValidCombine {
-  final List<String> validCombineList;
-  final List<String> columnDefinition;
+  final List<Object> validCombineList;
+  final List<Object> columnDefinition;
 
   ValidCombine(this.validCombineList, this.columnDefinition);
 
   factory ValidCombine.fromMap(json) {
-    final List<String> validCombineList =
-        json['validCombineList'] as List<String>;
-    final List<String> columnDefinition =
-        json['columnDefinition'] as List<String>;
+    final List<Object> validCombineList =
+        json['validCombineList'] as List<Object>;
+    final List<Object> columnDefinition =
+        json['columnDefinition'] as List<Object>;
     return ValidCombine(validCombineList, columnDefinition);
   }
 }

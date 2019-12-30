@@ -17,3 +17,5 @@ const String baseUrl = "https://wxapp.qunar.com";
 const bool boolean = devMode == "dev" ? true : false;
 
 const sectionColor = Color(0xff00E5EE);
+
+const colorOrigin = Color(0xfff7b022);

@@ -2,7 +2,6 @@ import 'package:amap_location_fluttify/amap_location_fluttify.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_travel/base/api.dart';
 import 'package:flutter_travel/base/event_emitter.dart';
 import 'package:flutter_travel/base/http_proxy.dart';
@@ -29,13 +28,13 @@ class YiRiYouPage extends StatefulWidget {
   }
 }
 
-class _YiRiYouPageState extends State<YiRiYouPage> with RouteHelper {
+class _YiRiYouPageState extends State<YiRiYouPage> with RouteHelper, EventEmitter {
   AroundAndHotSightModel _data;
   DayTripListPanelData _searchResult;
   bool renderSearchResult = false;
 
   bool error = false;
-  final EventEmitter _eventEmitter = EventEmitter();
+  // final EventEmitter _eventEmitter = EventEmitter();
 
   @override
   void initState() {
@@ -45,7 +44,7 @@ class _YiRiYouPageState extends State<YiRiYouPage> with RouteHelper {
   }
 
   void _initEvents() {
-    _eventEmitter.on("submit", (data) {
+    on("submit", (data) {
       // Fluttertoast.showToast(msg: data["value"].toString());
       print(
         "get event submit ${data["value"]}",
@@ -55,7 +54,7 @@ class _YiRiYouPageState extends State<YiRiYouPage> with RouteHelper {
         renderSearchResult = true;
       });
     });
-    _eventEmitter.on("clearValue", (_) {
+    on("clearValue", (_) {
       setState(() {
         renderSearchResult = false;
       });
@@ -109,7 +108,7 @@ class _YiRiYouPageState extends State<YiRiYouPage> with RouteHelper {
   }
 
   Widget _renderHeader() {
-    return HeaderPanel(_eventEmitter);
+    return HeaderPanel(this);
   }
 
   Widget _renderMainContent() {
@@ -179,13 +178,11 @@ class _YiRiYouPageState extends State<YiRiYouPage> with RouteHelper {
         // NOTE: 轻触屏幕失去焦点
         behavior: HitTestBehavior.translucent,
         onTap: () {
-          _eventEmitter.emit("blur", null);
+          emit("blur", null);
         },
         child: Center(
-            child: Container(
-          height: ScreenUtilHelper.setHeight(ScreenUtil.screenHeight),
           child: _render(),
-        )),
+        ),
       ),
     );
   }

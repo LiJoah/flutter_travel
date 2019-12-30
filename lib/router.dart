@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_travel/pages/sight_detail/sight_detail.dart';
 import 'package:flutter_travel/pages/yi_ri_you/yi_ri_you.dart';
+import 'package:flutter_travel/pages/yiriyou_detail/yiriyou_detail.dart';
 import 'package:flutter_travel/widgets/webview.dart';
 
 class Route {
@@ -23,8 +24,8 @@ final Map<String, Route> routers = {
     title: '景点详情',
   ),
   "/yiriyou_detail": Route(
-    path: RoutePathAlias.sightDetail,
-    page: (_) => SightDetailPage(),
+    path: RoutePathAlias.yiriyouDetail,
+    page: (_) => YiRiYouDetailPage(),
     title: '景点详情',
   ),
   "/webview": Route(

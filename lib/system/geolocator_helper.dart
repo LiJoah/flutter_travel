@@ -4,7 +4,7 @@ import 'package:flutter_travel/base/event_emitter.dart';
 import 'package:flutter_travel/system/permission_helper.dart';
 import 'package:flutter_travel/configs/scret_config.dart';
 
-class _GeolocatorHelper extends EventEmitter {
+class _GeolocatorHelper with EventEmitter {
   Location _lastLocation;
 
   /// init ios key
