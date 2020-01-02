@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_travel/pages/air_ticket/air_ticket_page.dart';
 import 'package:flutter_travel/pages/sight_detail/sight_detail.dart';
+import 'package:flutter_travel/pages/travel_strategy/travel_strategy_page.dart';
 import 'package:flutter_travel/pages/yi_ri_you/yi_ri_you.dart';
 import 'package:flutter_travel/pages/yiriyou_detail/yiriyou_detail.dart';
 import 'package:flutter_travel/widgets/webview.dart';
@@ -28,6 +30,16 @@ final Map<String, Route> routers = {
     page: (_) => YiRiYouDetailPage(),
     title: '景点详情',
   ),
+  "/travel_strategy": Route(
+    path: RoutePathAlias.travelStrategy,
+    page: (_) => TravelStrategyPage(),
+    title: '旅游攻略',
+  ),
+  "/air_ticket": Route(
+    path: RoutePathAlias.airTicketPage,
+    page: (_) => AirTicketPage(),
+    title: '机票',
+  ),
   "/webview": Route(
     path: RoutePathAlias.webview,
     page: (_) => WebViewPage(),
@@ -36,13 +48,23 @@ final Map<String, Route> routers = {
 };
 
 class RoutePathAlias {
+  /// NOTE: 首页
   static final String index = "/index";
+
+  /// NOTE: 一日游
   static final String yiriyou = "/yiriyou";
-  // NOTE: 景点详情
+
+  /// NOTE: 景点详情
   static final String sightDetail = "/sight_detail";
 
-  // NOTE: 一日游详情
+  /// NOTE: 一日游详情
   static final String yiriyouDetail = "/yiriyou_detail";
+
+  /// NOTE: 旅游攻略
+  static final String travelStrategy = "/travel_strategy";
+
+  /// NOTE: 机票
+  static final String airTicketPage = "/air_ticket";
 
   static final String webview = "/webview";
 }

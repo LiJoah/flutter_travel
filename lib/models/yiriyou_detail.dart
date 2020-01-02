@@ -172,7 +172,7 @@ class FeatureData {
   final String url;
   final String recommendReason;
   final bool definite;
-  final bool noSellExpense;
+  final bool noSelfExpense;
   final bool noShopping;
 
   FeatureData(
@@ -180,7 +180,7 @@ class FeatureData {
     this.desc,
     this.url,
     this.recommendReason,
-    this.noSellExpense,
+    this.noSelfExpense,
     this.noShopping,
   );
 
@@ -189,14 +189,14 @@ class FeatureData {
     final String url = json["url"] as String;
     final String recommendReason = json["recommendReason"] as String;
     final bool definite = json["definite"] as bool;
-    final bool noSellExpense = json["noSellExpense"] as bool;
+    final bool noSelfExpense = json["noSelfExpense"] as bool;
     final bool noShopping = json["noShopping"] as bool;
     return FeatureData(
       definite,
       desc,
       url,
       recommendReason,
-      noSellExpense,
+      noSelfExpense,
       noShopping,
     );
   }

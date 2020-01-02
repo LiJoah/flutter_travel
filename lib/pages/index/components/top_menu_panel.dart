@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_travel/models/home_info_config.dart';
+import 'package:flutter_travel/router.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class TopMenuPanelWidget extends StatefulWidget {
@@ -16,7 +17,7 @@ class TopMenuPanelWidget extends StatefulWidget {
   }
 }
 
-class _TopMenuPanelState extends State<TopMenuPanelWidget> {
+class _TopMenuPanelState extends State<TopMenuPanelWidget> with RouteHelper {
   HomeTopMenuPanelInfo _data;
   @override
   void initState() {
@@ -41,8 +42,15 @@ class _TopMenuPanelState extends State<TopMenuPanelWidget> {
 
   _handTap(String type, text) {
     Fluttertoast.cancel();
-    Fluttertoast.showToast(
-        msg: "$type: $text: 暂未开发", gravity: ToastGravity.CENTER);
+    Fluttertoast.cancel();
+    switch (type) {
+      case "flight":
+        routePush(context, RoutePathAlias.airTicketPage);
+        break;
+      default:
+        Fluttertoast.showToast(
+            msg: "$type: $text: 暂未开发", gravity: ToastGravity.CENTER);
+    }
   }
 
   Widget _renderWrapItem(HomeMenuItemModel item) {

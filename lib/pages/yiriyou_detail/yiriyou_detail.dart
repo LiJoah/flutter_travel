@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_travel/base/api.dart';
 import 'package:flutter_travel/base/http_proxy.dart';
-import 'package:flutter_travel/base/screen_util_helper.dart';
+import 'package:flutter_travel/base/logger_format.dart';
 import 'package:flutter_travel/base/storage.dart';
 import 'package:flutter_travel/base/utils.dart';
 import 'package:flutter_travel/components/detail_skeleton.dart';
@@ -12,7 +12,12 @@ import 'package:flutter_travel/components/error.dart';
 import 'package:flutter_travel/configs/app_config.dart';
 import 'package:flutter_travel/configs/normal_config.dart';
 import 'package:flutter_travel/models/yiriyou_detail.dart';
+import 'package:flutter_travel/pages/yiriyou_detail/components/content_price_explain.dart';
+import 'package:flutter_travel/pages/yiriyou_detail/components/content_routes.dart';
 import 'package:flutter_travel/pages/yiriyou_detail/components/content_special_panel.dart';
+import 'package:flutter_travel/pages/yiriyou_detail/components/content_use_explain.dart';
+import 'package:flutter_travel/pages/yiriyou_detail/components/content_user_comment.dart';
+import 'package:flutter_travel/pages/yiriyou_detail/components/content_wrap.dart';
 import 'package:flutter_travel/pages/yiriyou_detail/components/header.dart';
 import 'package:flutter_travel/router.dart';
 import 'package:flutter_travel/widgets/normal_app_bar.dart';
@@ -45,7 +50,7 @@ class _YiRiYouDetailPageState extends State<YiRiYouDetailPage>
     super.didChangeDependencies();
     Map args = getRouteArgs(context) as Map;
     spuId = args["spuId"].toString();
-    print("get spuId $spuId");
+    logger.debug("get spuId $spuId");
     // storage.delete(StorageKeyAlias.yiriyouDetail);
     _setupData().then((_data) async {
       if (_data == null) {
@@ -56,8 +61,13 @@ class _YiRiYouDetailPageState extends State<YiRiYouDetailPage>
     });
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   Future _setupData() async {
-    var _d = storage.getItem(StorageKeyAlias.yiriyouDetail) as String;
+    var _d = storage.getItem(StorageKeyAlias.getYiriyouDetailKey(spuId)) as String;
     if (_d != null && _d.isNotEmpty) {
       Map<String, dynamic> map = jsonDecode(_d) as Map<String, dynamic>;
       int expireAt = int.parse(map["expireAt"] as String);
@@ -74,9 +84,11 @@ class _YiRiYouDetailPageState extends State<YiRiYouDetailPage>
 
   _setDetailData(d) {
     var data = YiRiYouDetailModel.fromMap(d);
-    setState(() {
-      detailData = data;
-    });
+    if (mounted) {
+      setState(() {
+        detailData = data;
+      });
+    }
   }
 
   Future _getDetailData() async {
@@ -88,7 +100,7 @@ class _YiRiYouDetailPageState extends State<YiRiYouDetailPage>
     if (res.ret) {
       int expireAt =
           Utils.currentTimeMillis() + yiriyouDetailDataExpireAtInterval;
-      storage.setItem(StorageKeyAlias.yiriyouDetail,
+      storage.setItem(StorageKeyAlias.getYiriyouDetailKey(spuId),
           {"data": res.data, "expireAt": expireAt.toString()});
       return _setDetailData(res.data);
     }
@@ -107,23 +119,27 @@ class _YiRiYouDetailPageState extends State<YiRiYouDetailPage>
 
   Widget _renderHeader() {
     SpuInfo info = detailData.spuInfo;
-    return HeaderPanel(info);
+    List<TagData> tagList = detailData.tagList;
+    return HeaderPanel(info, tagList);
   }
 
   Widget _renderMain() {
-    return Container(
-      height: ScreenUtilHelper.setScreenHeight(),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[_renderHeader(), _renderContent()],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[_renderHeader(), _renderContent()],
     );
   }
 
   Widget _renderContent() {
     return Column(
-      children: <Widget>[ContentSpecialPanel()],
+      children: <Widget>[
+        ContentSpecialPanel(detailData.feature),
+        ContentWrap(ContentRoutes(detailData.routes), "行程介绍"),
+        ContentWrap(ContentPriceExplain(detailData.structureInfo), "费用及退款说明"),
+        ContentWrap(ContentUseExplain(detailData.structureInfo), "使用说明"),
+        ContentWrap(ContentUserComment(detailData.commentList), "用户评论"),
+      ],
     );
   }
 

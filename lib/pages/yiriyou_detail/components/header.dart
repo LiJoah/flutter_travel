@@ -6,7 +6,8 @@ import 'package:flutter_travel/models/yiriyou_detail.dart';
 
 class HeaderPanel extends StatelessWidget {
   final SpuInfo info;
-  HeaderPanel(this.info);
+  final List<TagData> tagList;
+  HeaderPanel(this.info, this.tagList);
 
   Widget _renderText(String text, {double left, double right}) {
     return Positioned(
@@ -31,7 +32,7 @@ class HeaderPanel extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 10),
             child: Text(
               info.productName,
-              style: TextStyle(color: Colors.black54, fontSize: 16),
+              style: TextStyle(color: Colors.black87, fontSize: 16),
             ),
           ),
           Row(
@@ -58,30 +59,35 @@ class HeaderPanel extends StatelessWidget {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              _renderLable("assets/images/clock.png", "可订明日"),
-              _renderLable("assets/images/clock.png", "条件退"),
-              _renderLable("assets/images/clock.png", "汽车往返"),
-            ],
+            children: _renderTagList(tagList),
           )
         ],
       ),
     );
   }
 
+  List<Widget> _renderTagList(List<TagData> list) {
+    return list.map((item) {
+      return _renderLable(item.icon, item.label);
+    }).toList();
+  }
+
   Widget _renderLable(String iconSrc, String text) {
     return Container(
-      alignment: Alignment.bottomLeft,
+      alignment: Alignment.centerLeft,
       padding: EdgeInsets.only(top: 10, right: 30),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Image.asset(
-            iconSrc,
-            alignment: Alignment.bottomLeft,
-            height: ScreenUtilHelper.setHeight(22),
-            width: ScreenUtilHelper.setWidth(22),
-            fit: BoxFit.contain,
+          Padding(
+            padding: EdgeInsets.only(top: 2.5),
+            child: Image.network(
+              iconSrc,
+              height: ScreenUtilHelper.setHeight(22),
+              width: ScreenUtilHelper.setWidth(22),
+              fit: BoxFit.contain,
+            ),
           ),
           Padding(
             padding: EdgeInsets.only(left: 3),

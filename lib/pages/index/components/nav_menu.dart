@@ -54,8 +54,7 @@ class _NavMenuState extends State<NavMenu> with RouteHelper {
         routePush(context, RoutePathAlias.yiriyou);
         break;
       case "travel":
-        Fluttertoast.showToast(
-            msg: "$title: $type: 暂未开发", gravity: ToastGravity.CENTER);
+        routePush(context, RoutePathAlias.travelStrategy);
         break;
       default:
         Fluttertoast.showToast(

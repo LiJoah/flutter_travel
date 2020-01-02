@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_travel/base/screen_util_helper.dart';
+import 'package:flutter_travel/components/panel_title.dart';
 import 'package:flutter_travel/models/yi_ri_you.dart';
 import 'package:flutter_travel/pages/yi_ri_you/components/panel_bottom_info.dart';
 import 'package:flutter_travel/pages/yi_ri_you/components/panel_left_image.dart';
-import 'package:flutter_travel/pages/yi_ri_you/components/panel_title.dart';
 import 'package:flutter_travel/router.dart';
 
 enum RenderType { searchSreault, dayTrip }

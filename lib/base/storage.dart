@@ -6,7 +6,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// NOTE: 定义本地缓存的字段
 class StorageKeyAlias {
   static final String homeInfo = "homeInfo";
-  static final String yiriyouDetail = "yiriyouDetail";
+  static String getYiriyouDetailKey(String spuId) {
+    return "yiriyouDetail_$spuId";
+  }
 }
 
 class _Storage {

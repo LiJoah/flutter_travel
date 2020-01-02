@@ -41,6 +41,27 @@ class Utils {
     }
   }
 
+  static Map getUrlArgs(String url) {
+    Map res = {};
+    Uri _u = Uri.parse(url);
+    _u.queryParameters.forEach((k, v) {
+      res[k] = v;
+    });
+    return res;
+  }
+
+  static String getUrlSearch(String url) {
+    if (url == null) {
+      return "";
+    }
+    String search = "";
+    int index = url.indexOf("?");
+    if (index > -1) {
+      search = url.substring(index + 1);
+    }
+    return search;
+  }
+
   /// 复制到剪粘板
   /// String text 需要复制的文本
   static copyToClipboard(final String text) {

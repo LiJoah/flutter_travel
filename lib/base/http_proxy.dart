@@ -25,7 +25,7 @@ final _dio = Dio(BaseOptions(
   baseUrl: baseUrl,
 
   /// 连接超时
-  // connectTimeout: 5000,
+  connectTimeout: 5000,
 
   /// 请求超时
 ));
@@ -68,7 +68,7 @@ class _HttpInterceptors extends InterceptorsWrapper {
           }
           response.data = Utils.camelize(_d);
         } catch (e) {
-          logger.error("55: parser rawData error");
+          logger.error("Interceptors onresponse parser rawData error");
         }
       }
     }
@@ -76,13 +76,12 @@ class _HttpInterceptors extends InterceptorsWrapper {
   }
 }
 
-// apikey=
 /// http 请求的中间件
 class HttpProxy {
   static final String _host = baseUrl;
   String _method;
   String _path;
-  Map<String, Object> _headers = {};
+  // Map<String, Object> _headers = {};
   Map<String, Object> _urlArgs = {};
   Map<String, Object> _bodyArgs = {};
 
@@ -110,7 +109,6 @@ class HttpProxy {
     _setHeaders();
     // _updateDefualtQueryArgs(GlobalData.loginInfo.cookies);
     _setDefualtQueryArgs();
-    logger.info("[Requset Headers :] $_headers");
     if (_method == 'POST') {
       HttpBaseResult res = await _sendPost();
       return res;
@@ -164,7 +162,7 @@ class HttpProxy {
       res.ret = false;
       return res;
     } else {
-      logger.info("[$_path get result $result]");
+      logger.debug("[$_path get result $result]");
       if (result is Map) {
         res.code = (result["code"] ??
             result["status"].toString() ??

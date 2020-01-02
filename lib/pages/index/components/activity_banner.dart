@@ -1,10 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_travel/base/utils.dart';
 import 'package:flutter_travel/models/home_info_config.dart';
+import 'package:flutter_travel/router.dart';
 
 class ActivityBanner extends StatelessWidget {
+  final RouteHelperCls routeHelper = RouteHelperCls();
   final List<BannerModel> _banners;
   ActivityBanner(List<BannerModel> _banners) : _banners = _banners ?? [] {
     _banners = _banners;
@@ -42,19 +46,35 @@ class ActivityBanner extends StatelessWidget {
                   builder: DotSwiperPaginationBuilder(
                       activeColor: Color(0xff23f6e1))),
               itemBuilder: (context, int index) {
-                String src =
-                    _banners[index]?.newImg ?? _banners[index]?.imgUrl ?? "";
-                return ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
-                  child: CachedNetworkImage(
-                    imageUrl: src,
-                    fit: BoxFit.fill,
+                BannerModel banner = _banners[index];
+                String src = banner?.newImg ?? banner?.imgUrl ?? "";
+                return InkWell(
+                  onTap: () {
+                    Map args = Utils.getUrlArgs(banner.toUrl);
+                    String url = args["url"].toString();
+                    if (url.isEmpty) {
+                      return;
+                    }
+                    String _r = Uri.decodeComponent(url);
+                    print(_r);
+                    if (!_r.startsWith("https://")) {
+                      return;
+                    }
+                    routeHelper.routePush(context, RoutePathAlias.webview,
+                        query: {"url": _r, "title": "去哪儿"});
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                    child: CachedNetworkImage(
+                      imageUrl: src,
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 );
               },
               itemCount: _banners.length,
             ),
-          )
+          ),
         ],
       ),
     );
