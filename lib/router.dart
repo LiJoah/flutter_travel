@@ -1,10 +1,15 @@
+import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_travel/pages/air_ticket/air_ticket_page.dart';
 import 'package:flutter_travel/pages/sight_detail/sight_detail.dart';
-import 'package:flutter_travel/pages/travel_strategy/travel_strategy_page.dart';
+import 'package:flutter_travel/pages/travel_strategy/page.dart';
 import 'package:flutter_travel/pages/yi_ri_you/yi_ri_you.dart';
 import 'package:flutter_travel/pages/yiriyou_detail/yiriyou_detail.dart';
 import 'package:flutter_travel/widgets/webview.dart';
+
+import 'fishStore/fishGlobalStore/state.dart';
+import 'fishStore/fishGlobalStore/store.dart';
+// ';
 
 class Route {
   Route({@required this.path, @required this.page, this.title});
@@ -30,11 +35,12 @@ final Map<String, Route> routers = {
     page: (_) => YiRiYouDetailPage(),
     title: '景点详情',
   ),
-  "/travel_strategy": Route(
-    path: RoutePathAlias.travelStrategy,
-    page: (_) => TravelStrategyPage(),
-    title: '旅游攻略',
-  ),
+  // NOTE: 由闲鱼接管
+  // "/travel_strategy": Route(
+  //   path: RoutePathAlias.travelStrategy,
+  //   page: (_) => TravelStrategyPage(),
+  //   title: '旅游攻略',
+  // ),
   "/air_ticket": Route(
     path: RoutePathAlias.airTicketPage,
     page: (_) => AirTicketPage(),
@@ -92,3 +98,64 @@ mixin RouteHelper {
 
 /// NOTE: 如果是 StatelessWidget 那么需要使用下面一个类来操作路由
 class RouteHelperCls with RouteHelper {}
+
+/// NOTE: 闲鱼的 fish-redux 采用了新的一套风格的设计, 如下是采用闲鱼的 fish-redux 创建的 routes
+/// NOTE: material 中的 Action 会和 fish_redux 中的 Action 出现冲突, import 的时候需要 hide
+createRouteByFishRedux() {
+  final AbstractRoutes routes = PageRoutes(
+    pages: <String, Page<Object, dynamic>>{
+      /// NOTE: 旅游攻略页面由 fish_redux 接管
+      RoutePathAlias.travelStrategy: TravelStrategyPage(),
+      //TODO: 注册其他的页面
+    },
+    visitor: (String path, Page<Object, dynamic> page) {
+      /// 只有特定的范围的 Page 才需要建立和 AppStore 的连接关系
+      /// 满足 Page<T> ，T 是 GlobalBaseState 的子类
+      if (page.isTypeof<FishGlobalBaseState>()) {
+        /// 建立 AppStore 驱动 PageStore 的单向数据连接
+        /// 1. 参数1 AppStore
+        /// 2. 参数2 当 AppStore.state 变化时, PageStore.state 该如何变化
+        page.connectExtraStore<FishGlobalState>(FishGlobalStore.store,
+            (Object pagestate, FishGlobalState appState) {
+          final FishGlobalBaseState p = pagestate as FishGlobalBaseState;
+          if (p.themeColor != appState.themeColor) {
+            if (pagestate is Cloneable) {
+              final Object copy = pagestate.clone();
+              final FishGlobalBaseState newState = copy as FishGlobalBaseState;
+              newState.themeColor = appState.themeColor;
+              return newState;
+            }
+          }
+          return pagestate;
+        });
+      }
+
+      /// AOP
+      /// 页面可以有一些私有的 AOP 的增强， 但往往会有一些 AOP 是整个应用下，所有页面都会有的。
+      /// 这些公共的通用 AOP ，通过遍历路由页面的形式统一加入。
+      page.enhancer.append(
+
+          /// View AOP
+          // viewMiddleware: <ViewMiddleware<dynamic>>[
+          //   safetyView<dynamic>(),
+          // ],
+
+          /// Adapter AOP
+          // adapterMiddleware: <AdapterMiddleware<dynamic>>[
+          //   safetyAdapter<dynamic>()
+          // ],
+
+          /// Effect AOP
+          // effectMiddleware: <EffectMiddleware<dynamic>>[
+          //   _pageAnalyticsMiddleware<dynamic>(),
+          // ],
+
+          /// Store AOP
+          // middleware: <Middleware<dynamic>>[
+          //   logMiddleware<dynamic>(tag: page.runtimeType.toString()),
+          // ],
+          );
+    },
+  );
+  return routes;
+}

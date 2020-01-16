@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'logger_format.dart';
 
 /// 事件处理器
 typedef void Handler<D>(D data);
@@ -76,7 +77,7 @@ mixin EventEmitter<E extends Map> {
           _events.remove(event);
         }
       }
-      print("Cannot find listenert of $event in $this --EventEmitter");
+      logger.debug("Cannot find listenert of $event in $this --EventEmitter");
     } else {
       for (var arr = _events[event], i = 0; i < arr.length; i++) {
         _EventListener listener = arr[i];

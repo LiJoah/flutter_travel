@@ -42,7 +42,6 @@ class _TopMenuPanelState extends State<TopMenuPanelWidget> with RouteHelper {
 
   _handTap(String type, text) {
     Fluttertoast.cancel();
-    Fluttertoast.cancel();
     switch (type) {
       case "flight":
         routePush(context, RoutePathAlias.airTicketPage);
