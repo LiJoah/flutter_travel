@@ -1,5 +1,5 @@
 import 'package:fish_redux/fish_redux.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Page;
 import 'package:flutter_travel/pages/air_ticket/air_ticket_page.dart';
 import 'package:flutter_travel/pages/sight_detail/sight_detail.dart';
 import 'package:flutter_travel/pages/travel_strategy/page.dart';

@@ -8,6 +8,7 @@ class AroundAndHotSightModel {
   AroundAndHotSightModel(this.hotSight, this.dayTripList, this.aroundSight,
       this.isShowAround, this.banner);
 
+
   factory AroundAndHotSightModel.fromMap(data) {
     DayTripListPanelData dayTripList =
         DayTripListPanelData.fromMap(data["dayTripList"]);

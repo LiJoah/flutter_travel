@@ -4,6 +4,7 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/material_header.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_travel/base/global_data.dart';
+import 'package:flutter_travel/components/empty.dart';
 import 'package:flutter_travel/models/home_info_config.dart';
 import 'package:flutter_travel/pages/index/components/float_ad.dart';
 import 'package:flutter_travel/pages/index/components/low_price_panel.dart';
@@ -21,6 +22,10 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final IndexStore indexStore = Provider.of<IndexStore>(context);
     HomeInfoModel info = indexStore.homeInfo ?? GlobalData.homeInfo;
+
+    if (info == null) {
+      return EmptyWidget();
+    }
     return Stack(
       children: <Widget>[
         Container(
@@ -28,6 +33,7 @@ class HomePage extends StatelessWidget {
           child: EasyRefresh(
               header: MaterialHeader(),
               onRefresh: indexStore.reloadHomeInfo,
+
               /// listView 需要一个可计算的高,
               child:
                   ListView(scrollDirection: Axis.vertical, children: <Widget>[
